@@ -1,0 +1,8 @@
+{
+    success: true,
+    items: [
+        {id: 1, parent_id: null, code: 'D10', name: 'Cable MAC', description: 'Son puertos antiguos', brand: 'Adidas', model: 'Model 1', serialNumber: '123456789-A', features: 'A, B', status: 'NEW', location: 'Cajón 1'},
+        {id: 2, parent_id: null, code: 'D11', name: 'Cable Teclado', description: 'Cable alargado', brand: 'Adidas', model: 'Model 1', serialNumber: '123456789-A', features: 'A, B', status: 'RETURNED', location: 'Cajón 2'},
+        {id: 3, parent_id: null, code: 'D12', name: 'Cable USB', description: '1.5 metros', brand: 'Nike', model: 'Model 1', serialNumber: '123456789-A', features: 'A, B', status: 'BORROWED', location: 'Cajón 3'},
+    ]
+}

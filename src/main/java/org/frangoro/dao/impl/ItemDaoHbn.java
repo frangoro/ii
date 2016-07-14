@@ -58,4 +58,17 @@ public class ItemDaoHbn implements ItemDao{
 		}
 	}
 
+	@Override
+	public Boolean create(Items item) {
+		log.debug("persist item code: " + item.getCode());
+		try {
+			em.persist(item);
+			log.debug("persist successful");
+			return true;
+		} catch (RuntimeException re) {
+			log.error("persist failed for item code: " + item.getCode(), re);
+			throw re;
+		}
+	}
+
 }

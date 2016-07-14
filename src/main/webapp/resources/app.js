@@ -11,8 +11,8 @@ Ext.application({
         Ext.create('Ext.container.Viewport', {
             layout: 'fit',
             items: [
-                {   
-                    xtype: 'itemsList', 
+                {
+                    xtype: 'itemsList',
                     title: 'Items',
                     html : 'List of items go here.'
                 }

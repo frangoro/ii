@@ -12,6 +12,10 @@ import org.frangoro.domain.ItemsTransLoc;
 import org.frangoro.domain.ItemsTransLocId;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Operaciones de consulta sobre la vista que representa el ente: Itemas -
+ * Transacciones - Localizaciones
+ */
 @Repository
 public class ItemTranLocDaoHbn implements ItemTranLocDao {
 
@@ -20,7 +24,14 @@ public class ItemTranLocDaoHbn implements ItemTranLocDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public ItemsTransLoc findById(ItemsTransLocId id) {
+	/**
+	 * Encuentra la información de un item con el estado correspondiente 
+	 * a su última operación y la localización actual.
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public ItemsTransLoc findById(Long id) {
 		log.debug("getting ItemsTransLoc instance with id: " + id);
 		try {
 			ItemsTransLoc instance = entityManager.find(ItemsTransLoc.class, id);
@@ -32,6 +43,11 @@ public class ItemTranLocDaoHbn implements ItemTranLocDao {
 		}
 	}
 
+	/**
+	 * Encuentra los datos correspondientes a la última transacción de
+	 * todos los items.
+	 */
+	@Override
 	public List<ItemsTransLoc> findAll() {
 		log.debug("getting all ItemsTransLoc instances");
 		try {
@@ -44,4 +60,5 @@ public class ItemTranLocDaoHbn implements ItemTranLocDao {
 			throw re;
 		}
 	}
+
 }

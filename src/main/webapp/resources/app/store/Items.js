@@ -12,10 +12,10 @@ Ext.define('II.store.Items', {
     proxy: {
 	    api: {
 //	        read: 'data/items.json',
-	        update:'./items'
+	        update:'./item'
 	    },
         type: 'rest',
-        url: './items',
+        url: './item',
         reader: {
             type: 'json',
             root: 'items',

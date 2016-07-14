@@ -3,12 +3,56 @@ package org.frangoro.service;
 import java.util.List;
 
 import org.frangoro.domain.Items;
-import org.frangoro.dto.ItemDto;
+import org.frangoro.domain.ItemsTransLoc;
 
 public interface ItemService {
-	public List<ItemDto> getItems();
 
+	/**
+	 * Obtiene todos los items. Solo los datos correspondientes a su última
+	 * transacción. Incluye eliminados.
+	 * 
+	 * @return
+	 */
+	public List<ItemsTransLoc> getItems();
+
+	/**
+	 * Modifica un item creando una nueva transacción.
+	 * 
+	 * @param item
+	 * @return
+	 */
 	public Boolean update(Items item);
-	
-	public Items get(Long id);
+
+	/**
+	 * Obtiene la información correspondiente de la última transacción del item
+	 * indicado por el id.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ItemsTransLoc getInfo(Long id);
+
+	/**
+	 * Obtiene el item indicado por el id.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Items getItem(Long id);
+
+	/**
+	 * Crea un nuevo item creando una nueva transacción.
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public Boolean create(Items item);
+
+	/**
+	 * Elimina el item indicado por su id creando una nueva transacción.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Boolean delete(Long id);
 }

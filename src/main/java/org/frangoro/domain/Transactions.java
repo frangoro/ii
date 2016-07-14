@@ -19,7 +19,8 @@ import javax.persistence.TemporalType;
 @Table(name = "TRANSACTIONS")
 public class Transactions implements java.io.Serializable {
 
-	private long id;
+	private static final long serialVersionUID = 1L;
+	private Long id;
 	private Locations locations;
 	private Items items;
 	private Date transactionDate;
@@ -29,14 +30,14 @@ public class Transactions implements java.io.Serializable {
 	public Transactions() {
 	}
 
-	public Transactions(long id, Date transactionDate, String transactionUser, String operation) {
+	public Transactions(Long id, Date transactionDate, String transactionUser, String operation) {
 		this.id = id;
 		this.transactionDate = transactionDate;
 		this.transactionUser = transactionUser;
 		this.operation = operation;
 	}
 
-	public Transactions(long id, Locations locations, Items items, Date transactionDate, String transactionUser,
+	public Transactions(Long id, Locations locations, Items items, Date transactionDate, String transactionUser,
 			String operation) {
 		this.id = id;
 		this.locations = locations;
@@ -45,9 +46,13 @@ public class Transactions implements java.io.Serializable {
 		this.transactionUser = transactionUser;
 		this.operation = operation;
 	}
+	
+	public Transactions(Transactions t) {
+		this(null, t.getLocations(), t.getItems(), t.getTransactionDate(), t.getTransactionUser(),
+				t.getOperation());
+	}
 
 	@Id
-
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	public long getId() {
 		return this.id;

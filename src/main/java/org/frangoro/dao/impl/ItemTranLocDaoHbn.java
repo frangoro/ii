@@ -1,15 +1,20 @@
 package org.frangoro.dao.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.frangoro.dao.ItemTranLocDao;
 import org.frangoro.domain.ItemsTransLoc;
-import org.frangoro.domain.ItemsTransLocId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,7 +24,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ItemTranLocDaoHbn implements ItemTranLocDao {
 
-	private static final Log log = LogFactory.getLog(ItemTranLocDaoHbn.class);
+	Logger log = LoggerFactory.getLogger(ItemTranLocDaoHbn.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -55,6 +60,38 @@ public class ItemTranLocDaoHbn implements ItemTranLocDao {
 					.createQuery("select itl from ItemsTransLoc itl", ItemsTransLoc.class).getResultList();
 			log.debug("get successful");
 			return instances;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	/**
+	 * Encuentra los datos correspondientes a la última transacción de
+	 * todos los items aplicando el filtro de búsqueda.
+	 */
+	//TODO: Modularizarlo para que sea más mantenible y reusable
+	@Override
+	public List<ItemsTransLoc> queryFilter(Map<String, String> filter) {
+		log.debug("getting all ItemsTransLoc instances with filters");
+		try {
+			final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+			CriteriaQuery criteria = builder.createQuery();
+			
+			final Root from = criteria.from(ItemsTransLoc.class);
+			criteria.select(from);
+
+			Predicate where = builder.disjunction();
+			for (Entry<String, String> attr : filter.entrySet())
+			{
+				where = builder.and(where, builder.equal(from.get(attr.getKey()), attr.getValue()));
+			}
+			criteria.where(where);
+			
+			List<ItemsTransLoc> results = entityManager.createQuery(criteria).getResultList();
+			
+			log.debug("get successful");
+			return results;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;

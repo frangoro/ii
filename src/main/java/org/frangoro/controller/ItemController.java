@@ -1,15 +1,17 @@
 package org.frangoro.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.frangoro.domain.Items;
 import org.frangoro.domain.ItemsTransLoc;
 import org.frangoro.dto.ItemDto;
 import org.frangoro.dto.conversor.ItemConversor;
 import org.frangoro.service.ItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import flexjson.JSONDeserializer;
+
 @Controller
 @RequestMapping("/item")
 public class ItemController {
@@ -28,7 +32,7 @@ public class ItemController {
 	@Autowired
 	ItemService itemService;
 	
-	private static final Log log = LogFactory.getLog(ItemController.class);
+	Logger log = LoggerFactory.getLogger(ItemController.class);
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
@@ -51,11 +55,18 @@ public class ItemController {
 		if (filter == null) {
 			log.debug("Searching without filter. Return all records.");
 			items = itemService.getItems();
-		} /*else {
-			items = itemService.getItemsFilter();
-		}*/
+		} else {
+			Map<String, String> filterMap = new HashMap<String, String>();
+			List<HashMap<String,String>> filterList = new JSONDeserializer<ArrayList<HashMap<String,String>>>().deserialize(filter);
+            for (HashMap<String,String> att : filterList) {
+                String name = att.get("property");
+                String value = att.get("value");
+                filterMap.put(name, value);
+            }
+            items = itemService.queryFilter(filterMap);
+		}
 		if (items == null) {
-			log.warn("Items not found");
+			log.warn("Items not found");//Devuelve 404, Habría que devolver mensaje de info
 			return new ResponseEntity<List<ItemDto>>(HttpStatus.NOT_FOUND);
 		}
 		ItemConversor.entityToDtos(items, itemDtos);

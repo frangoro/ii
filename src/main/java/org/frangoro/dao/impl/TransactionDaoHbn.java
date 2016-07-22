@@ -5,19 +5,17 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.frangoro.dao.ItemDao;
 import org.frangoro.dao.TransactionDao;
 import org.frangoro.domain.Items;
 import org.frangoro.domain.Transactions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class TransactionDaoHbn implements TransactionDao{
 
-	private static final Log log = LogFactory.getLog(TransactionDaoHbn.class);
+	Logger log = LoggerFactory.getLogger(TransactionDaoHbn.class);
 	
 	@PersistenceContext
 	EntityManager em;

@@ -5,17 +5,17 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.frangoro.dao.ItemDao;
 import org.frangoro.domain.Items;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class ItemDaoHbn implements ItemDao{
 
-	private static final Log log = LogFactory.getLog(ItemDaoHbn.class);
+	Logger log = LoggerFactory.getLogger(ItemDaoHbn.class);
 	
 	@PersistenceContext
 	EntityManager em;

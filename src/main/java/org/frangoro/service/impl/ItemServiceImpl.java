@@ -1,6 +1,7 @@
 package org.frangoro.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.frangoro.dao.ItemDao;
 import org.frangoro.dao.ItemTranLocDao;
@@ -67,6 +68,11 @@ public class ItemServiceImpl implements ItemService {
 			return null;
 		}
 		return item;
+	}
+	
+	@Override
+	public List<ItemsTransLoc> queryFilter (Map<String, String> filter) {
+		return itemTranLocDao.queryFilter(filter);
 	}
 
 }

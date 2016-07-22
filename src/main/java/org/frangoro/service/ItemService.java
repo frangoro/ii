@@ -1,6 +1,7 @@
 package org.frangoro.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.frangoro.domain.Items;
 import org.frangoro.domain.ItemsTransLoc;
@@ -55,4 +56,6 @@ public interface ItemService {
 	 * @return
 	 */
 	public Boolean delete(Long id);
+
+	public List<ItemsTransLoc> queryFilter(Map<String, String> filter);
 }

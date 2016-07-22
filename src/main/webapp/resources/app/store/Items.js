@@ -21,5 +21,11 @@ Ext.define('II.store.Items', {
             root: 'items',
             successProperty: 'success'
         }
-    }
+    }/*,
+    filters: [
+        {
+            property: 'code',
+            value   : ''
+        }
+    ]*/
 });

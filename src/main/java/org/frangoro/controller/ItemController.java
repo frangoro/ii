@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,7 +86,7 @@ public class ItemController {
 		ItemConversor.dtoToEntity(itemDto, item);
 		if (itemService.update(item)) {
 			log.debug("Item updated");
-			return new ResponseEntity<ItemDto>(HttpStatus.OK);
+			return new ResponseEntity<ItemDto>(itemDto, HttpStatus.OK);
 		}
 		log.warn("Item not updated");
 		return new ResponseEntity<ItemDto>(HttpStatus.NOT_MODIFIED);
@@ -98,22 +99,25 @@ public class ItemController {
 		ItemConversor.dtoToEntity(itemDto, item);
 		if (itemService.create(item)) {//TODO: Controlar si existe
 			log.debug("Item created with id: " + item.getId() + " and code: " + item.getCode());
-			return new ResponseEntity<ItemDto>(HttpStatus.CREATED);
+			return new ResponseEntity<ItemDto>(itemDto, HttpStatus.CREATED);
 		}
 		log.warn("Item not created");
 		return new ResponseEntity<ItemDto>(HttpStatus.NO_CONTENT);
 	}
 
-	/*@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public ResponseEntity<ItemDto> delete(@PathVariable("id") Long id) {
-		Items item = itemService.get(id);
+		Items item = itemService.getItem(id);
 		if (item == null) {
+			log.warn("Item not found with id: " + id);
 			return new ResponseEntity<ItemDto>(HttpStatus.NOT_FOUND);
 		}
-		itemService.delete(id);
-		log.debug("Item deleted with id: " + item.getId() + " and code: " + item.getCode());
-		return new ResponseEntity<ItemDto>(HttpStatus.OK);
-	}*/
+		if (itemService.delete(id)) {
+			log.debug("Item deleted with id: " + item.getId() + " and code: " + item.getCode());
+			return new ResponseEntity<ItemDto>(HttpStatus.OK);
+		}
+		return new ResponseEntity<ItemDto>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 }

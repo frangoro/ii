@@ -21,7 +21,7 @@ public class Items implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private long id;
+	private Long id;
 	private Items items;
 	private String code;
 	private String name;
@@ -36,12 +36,12 @@ public class Items implements java.io.Serializable {
 	public Items() {
 	}
 
-	public Items(long id, String name) {
+	public Items(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public Items(long id, Items items, String code, String name, String description, String brand, String model,
+	public Items(Long id, Items items, String code, String name, String description, String brand, String model,
 			String serialNumber, String features, Set<Items> itemses, Set<Transactions> transactionses) {
 		this.id = id;
 		this.items = items;
@@ -59,11 +59,11 @@ public class Items implements java.io.Serializable {
 	@Id
 
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

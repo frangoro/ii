@@ -58,14 +58,21 @@ Ext.define('II.controller.Items', {
                   property : name,
                   value : value
               };
-              console.log('property ' + name + 'value ' + value);
+              console.log('property: ' + name + ' - value: ' + value);
           }
       }
 
       store.clearFilter();
       store.filter(filters);
 
-      this.getItemsStore().load();
+      /*this.getItemsStore().load({
+        callback: function(records, operation, success) {
+          if (success == true) {
+            console.log('success!');
+          }
+        }
+      });*/
+      // Hace la petición pero no carga.
     }
 
 });

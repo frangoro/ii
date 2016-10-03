@@ -76,12 +76,13 @@ public class ItemTranLocDaoHbn implements ItemTranLocDao {
 		log.debug("getting all ItemsTransLoc instances with filters");
 		try {
 			final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-			CriteriaQuery criteria = builder.createQuery();
+			CriteriaQuery<ItemsTransLoc> criteria = builder.createQuery(ItemsTransLoc.class);
 			
-			final Root from = criteria.from(ItemsTransLoc.class);
+			final Root<ItemsTransLoc> from = criteria.from(ItemsTransLoc.class);
 			criteria.select(from);
 
-			Predicate where = builder.disjunction();
+			Predicate where = builder.conjunction();
+//			Predicate where = null;
 			for (Entry<String, String> attr : filter.entrySet())
 			{
 				where = builder.and(where, builder.equal(from.get(attr.getKey()), attr.getValue()));

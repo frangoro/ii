@@ -48,7 +48,7 @@ Ext.define('II.controller.Items', {
     searchItem: function(button){
       var form = button.up('form');
       var params = form.getForm().getValues();
-      var store = Ext.widget('itemsStore');
+      var store = Ext.getStore('Items');
       var filters = [];
 
       for (var name in params) {
@@ -64,15 +64,8 @@ Ext.define('II.controller.Items', {
 
       store.clearFilter();
       store.filter(filters);
+      store.load();
 
-      /*this.getItemsStore().load({
-        callback: function(records, operation, success) {
-          if (success == true) {
-            console.log('success!');
-          }
-        }
-      });*/
-      // Hace la petición pero no carga.
     }
 
 });

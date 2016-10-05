@@ -10,19 +10,6 @@ Ext.define('II.store.Items', {
         read: 'GET',
         update: 'PUT',
         destroy: 'POST'
-    },
-    proxy: {
-	    api: {
-//	        read: 'data/items.json',
-	        update:'./item'
-	    },
-        type: 'rest',
-        url: './item',
-        reader: {
-            type: 'json',
-            root: 'items',
-            successProperty: 'success'
-        }
     }/*,
     filters: [
         {

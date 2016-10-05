@@ -82,10 +82,9 @@ public class ItemTranLocDaoHbn implements ItemTranLocDao {
 			criteria.select(from);
 
 			Predicate where = builder.conjunction();
-//			Predicate where = null;
 			for (Entry<String, String> attr : filter.entrySet())
 			{
-				where = builder.and(where, builder.equal(from.get(attr.getKey()), attr.getValue()));
+				where = builder.and(where, builder.like(builder.upper(from.get(attr.getKey())), "%" + attr.getValue().toUpperCase() + "%"));
 			}
 			criteria.where(where);
 			

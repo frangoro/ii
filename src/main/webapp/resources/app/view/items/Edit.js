@@ -9,6 +9,7 @@ Ext.define('II.view.items.Edit', {
     initComponent: function() {
         this.items = [
             {
+                url: './item',
                 xtype: 'form',
                 items: [
                     {

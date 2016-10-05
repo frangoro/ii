@@ -14,7 +14,8 @@ Ext.define('II.controller.Items', {
                 itemdblclick: this.editItem
             },
             'itemsEdit button[action=save]': {
-                click: this.updateItem
+                //click: this.updateItem
+                click: this.createItem
             },
             'itemsSearch button[action=cleanForm]': {
               click: this.cleanSearchForm
@@ -38,6 +39,57 @@ Ext.define('II.controller.Items', {
     	record.set(values);
     	win.close();
       this.getItemsStore().sync();
+    },
+
+    createItem: function(button) {
+    	var win = button.up('window'),
+      form = win.down('form').getForm(); // Popup form
+      record = form.getRecord();// get the underlying model instance (all fields)
+      if (!record) {
+        record = Ext.create('II.model.Items');
+      }
+      form.updateRecord(record);// update the record with the form data (fields: code, name and description)
+      record.save({ // save the record to the server
+          success: function(item) {
+              Ext.Msg.alert('Success', 'Item saved successfully.')
+          },
+          failure: function(item) {
+              Ext.Msg.alert('Failure', 'Failed to save item.')
+          }
+      });
+      //values = form.getValues();
+    	//record.set(values);// ??? VS updateRecord
+    /*  if (!form.getForm().isDirty()) {
+            Ext.Msg.alert('Status', 'No new student data to create.');
+            return;
+        }*/
+      //if (stdMaster.isValid()) {
+      /*form.getForm().submit({
+        method: 'POST',
+        waitMsg: 'Saving..',
+        headers:
+        {
+            'Content-Type': 'application/json'
+        },
+        success: function (form, action) {
+          Ext.Msg.alert('Status', 'Saved successfully.');
+          //TODO: repetir búsqueda
+        },
+        failure: function (form, action) {
+            if (action.failureType === Ext.form.action.Action.CLIENT_INVALID) {
+                Ext.Msg.alert('CLIENT_INVALID', 'Something has been missed. Please check and try again.');
+            }
+            if (action.failureType === Ext.form.action.Action.CONNECT_FAILURE) {
+                Ext.Msg.alert('CONNECT_FAILURE', 'Status: ' + action.response.status + ': ' + action.response.statusText);
+            }
+            if (action.failureType === Ext.form.action.Action.SERVER_INVALID) {
+                Ext.Msg.alert('SERVER_INVALID', action.result.message);
+            }
+        }
+      });*/
+      //}
+    	win.close();
+      //this.getItemsStore().sync();
     },
 
     cleanSearchForm: function(button){

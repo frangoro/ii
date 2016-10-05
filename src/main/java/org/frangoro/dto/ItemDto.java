@@ -25,7 +25,7 @@ public class ItemDto {
 	}
 	/**
 	 * The status says the last operation over the item.
-	 * TODO: Implement status (avalible or not avalible) different to operation.
+	 * TODO: Implement status (available or not available) different to operation.
 	 */
 	private String status;
 	private String location;

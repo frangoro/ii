@@ -59,6 +59,7 @@ public class ItemDaoHbn implements ItemDao{
 	}
 
 	@Override
+	@Transactional
 	public Boolean create(Items item) {
 		log.debug("persist item code: " + item.getCode());
 		try {

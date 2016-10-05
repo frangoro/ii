@@ -19,6 +19,9 @@ import javax.persistence.Table;
 @Table(name = "ITEMS")
 public class Items implements java.io.Serializable {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	private long id;
 	private Items items;
 	private String code;
@@ -54,9 +57,7 @@ public class Items implements java.io.Serializable {
 		this.transactionses = transactionses;
 	}
 
-	@Id
-
-	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
+	
 	public long getId() {
 		return this.id;
 	}

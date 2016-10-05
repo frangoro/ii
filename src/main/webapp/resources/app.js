@@ -32,13 +32,20 @@ Ext.application({
                     activeTab: 0,      // First tab active by default
                     items: {
                       xtype: 'container',
+                      title: 'Items',
                       items: [{
                         xtype: 'itemsSearch',
-                        title: 'Items Search',
+                        title: 'Items search',
                         html : 'Find a item.'
                       }, {
+                        xtype: 'button',
+                        text: 'New item',
+                        handler: function() {
+                          var editWindowForm = new II.view.items.Edit();
+                        }
+                      }, {
                         xtype: 'itemsList',
-                        title: 'Items',
+                        title: 'Items list',
                         html : 'List of items go here.'
                       }]
                     }

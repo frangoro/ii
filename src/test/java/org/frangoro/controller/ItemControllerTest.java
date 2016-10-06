@@ -71,7 +71,7 @@ public class ItemControllerTest {
     	// Para ello se inyecta el servicio como un mock (ver springTestContext.xml)
     	// y se definen la salida que tendrá según la entrada
     	final Long ID = new Long(1);
-    	ItemsTransLoc myItem = new ItemsTransLoc();
+    	ItemDto myItem = new ItemDto();
     	myItem.setId(ID);
     	myItem.setCode("T");
     	when(itemService.getInfo(ID)).thenReturn(myItem);
@@ -173,7 +173,7 @@ public class ItemControllerTest {
     @Test
     public void createItem() throws Exception {
     	
-    	when(itemService.create(isA(Items.class))).thenReturn(true);
+    	when(itemService.create(isA(ItemDto.class))).thenReturn(true);
     	
     	// Prepare input
     	ItemDto itemDto = new ItemDto();

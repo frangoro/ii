@@ -4,9 +4,13 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.frangoro.dao.ItemDao;
 import org.frangoro.domain.Items;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -68,6 +72,27 @@ public class ItemDaoHbn implements ItemDao{
 			return true;
 		} catch (RuntimeException re) {
 			log.error("persist failed for item code: " + item.getCode(), re);
+			throw re;
+		}
+	}
+	
+	public Items findByCode(String code) {
+		log.debug("Get the item code: " + code);
+		try {
+			final CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Items> cq = cb.createQuery(Items.class);
+			Root<Items> from = cq.from(Items.class);
+			cq.select(from);
+			cq.where(cb.equal(from.get("code"), code));
+			List<Items> items = em.createQuery(cq).getResultList();
+			if (items != null && !items.isEmpty()) {
+				log.debug("get successful");
+				return items.get(0);
+			}
+			log.warn("Not found item with code: " + code);
+			return null;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
 			throw re;
 		}
 	}

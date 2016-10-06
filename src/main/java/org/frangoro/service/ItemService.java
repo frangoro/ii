@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.frangoro.domain.Items;
 import org.frangoro.domain.ItemsTransLoc;
+import org.frangoro.dto.ItemDto;
 
 public interface ItemService {
 
@@ -31,7 +32,7 @@ public interface ItemService {
 	 * @param id
 	 * @return
 	 */
-	public ItemsTransLoc getInfo(Long id);
+	public ItemDto getInfo(Long id);
 
 	/**
 	 * Obtiene el item indicado por el id.
@@ -44,10 +45,10 @@ public interface ItemService {
 	/**
 	 * Crea un nuevo item creando una nueva transacción.
 	 * 
-	 * @param item
+	 * @param itemDto
 	 * @return
 	 */
-	public Boolean create(Items item);
+	public Boolean create(ItemDto itemDto);
 
 	/**
 	 * Elimina el item indicado por su id creando una nueva transacción.

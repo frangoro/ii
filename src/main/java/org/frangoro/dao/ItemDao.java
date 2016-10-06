@@ -42,5 +42,7 @@ public interface ItemDao {
 	 * @return
 	 */
 	public Boolean create(Items item);
+	
+	public Items findByCode(String code);
 
 }

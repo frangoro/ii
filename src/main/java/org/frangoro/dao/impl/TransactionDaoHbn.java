@@ -11,6 +11,7 @@ import org.frangoro.domain.Transactions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class TransactionDaoHbn implements TransactionDao{
@@ -64,14 +65,15 @@ public class TransactionDaoHbn implements TransactionDao{
 	}
 
 	@Override
+	@Transactional
 	public Boolean create(Transactions transactionNew) {
-		log.debug("persist Transaction id: " + transactionNew.getId());
+		log.debug("persist Transaction.");
 		try {
 			em.persist(transactionNew);
-			log.debug("persist successful");
+			log.debug("persist successful. Id: " + transactionNew.getId());
 			return true;
 		} catch (RuntimeException re) {
-			log.error("persist failed for item code: " + transactionNew.getId(), re);
+			log.error("persist failed.");
 			throw re;
 		}
 	}

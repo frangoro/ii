@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -13,12 +15,13 @@ import javax.persistence.criteria.Root;
 
 import org.frangoro.dao.ItemTranLocDao;
 import org.frangoro.domain.ItemsTransLoc;
+import org.frangoro.dto.conversor.ItemConversor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 /**
- * Operaciones de consulta sobre la vista que representa el ente: Itemas -
+ * Operaciones de consulta sobre las 3 tablas que representan el ente: Itemas -
  * Transacciones - Localizaciones
  */
 @Repository
@@ -39,9 +42,22 @@ public class ItemTranLocDaoHbn implements ItemTranLocDao {
 	public ItemsTransLoc findById(Long id) {
 		log.debug("getting ItemsTransLoc instance with id: " + id);
 		try {
-			ItemsTransLoc instance = entityManager.find(ItemsTransLoc.class, id);
+			Query query = entityManager.createQuery(
+					"select i.id, i.items.id, i.code, i.name, i.description, i.brand, i.model, " +
+					"i.serialNumber, i.features, t.operation as status, l.name as location "
+					+ "from Transactions as t inner join t.items as i inner join t.locations as l "
+					//+ "where i.id = t.items AND l.id = t.locations "
+					+ "where i.id = :id "
+					+ "AND t.transactionDate in( select max(transactionDate) from Transactions group by items.id)");
+			query.setParameter("id", id);
+			Object aux = query.getSingleResult();
+			ItemsTransLoc instance = new ItemsTransLoc();
+			ItemConversor.entityToItemsTransLoc(aux, instance);
 			log.debug("get successful");
 			return instance;
+		} catch (NoResultException nre) {
+			log.warn("No items with id: " + id);
+			return null;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;

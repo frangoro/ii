@@ -35,16 +35,20 @@ public class ItemController {
 	
 	Logger log = LoggerFactory.getLogger(ItemController.class);
 
+	/**
+	 * Show the specified item by id.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<ItemDto> show(@PathVariable("id") Long id) {
-		ItemDto itemDto = new ItemDto();
-		ItemsTransLoc item = itemService.getInfo(id);
-		if (item == null) {
+		ItemDto itemDto = itemService.getInfo(id);
+		if (itemDto == null) {
 			log.warn("Item not found");
 			return new ResponseEntity<ItemDto>(HttpStatus.NOT_FOUND);
 		}
-		ItemConversor.entityToDto(item, itemDto);
 		return new ResponseEntity<ItemDto>(itemDto, HttpStatus.OK);
 	}
 	
@@ -96,8 +100,8 @@ public class ItemController {
 	@ResponseBody
 	public ResponseEntity<ItemDto> create(@RequestBody ItemDto itemDto) {
 		Items item = new Items();
-		ItemConversor.dtoToEntity(itemDto, item);
-		if (itemService.create(item)) {//TODO: Controlar si existe
+		
+		if (itemService.create(itemDto)) {
 			log.debug("Item created with id: " + item.getId() + " and code: " + item.getCode());
 			return new ResponseEntity<ItemDto>(itemDto, HttpStatus.CREATED);
 		}

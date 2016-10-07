@@ -49,14 +49,30 @@ Ext.define('II.controller.Items', {
         record = Ext.create('II.model.Items');
       }
       form.updateRecord(record);// update the record with the form data (fields: code, name and description)
-      record.save({ // save the record to the server
-          success: function(item) {
-              Ext.Msg.alert('Success', 'Item saved successfully.')
-          },
-          failure: function(item) {
-              Ext.Msg.alert('Failure', 'Failed to save item.')
-          }
-      });
+      /*if (form.isValid()) {
+        record.save({ // save the record to the server
+          waitMsg: 'Saving..',
+            success: function(item) {
+                Ext.Msg.alert('Success', 'Item saved successfully.');
+                Ext.getStore('Items').load();
+            },
+            failure: function(form, action) {
+                if (action.failureType) {
+                  if (action.failureType === Ext.form.action.Action.CLIENT_INVALID) {
+                    Ext.Msg.alert('CLIENT_INVALID', 'Something has been missed. Please check and try again.');
+                  }
+                  if (action.failureType === Ext.form.action.Action.CONNECT_FAILURE) {
+                    Ext.Msg.alert('CONNECT_FAILURE', 'Status: ' + action.response.status + ': ' + action.response.statusText);
+                  }
+                  if (action.failureType === Ext.form.action.Action.SERVER_INVALID) {
+                    Ext.Msg.alert('SERVER_INVALID', action.result.message);
+                  }
+                } else {
+                  Ext.Msg.alert('Failure', 'Failed to save item.');
+                }
+            }
+        });
+      }*/
       //values = form.getValues();
     	//record.set(values);// ??? VS updateRecord
     /*  if (!form.getForm().isDirty()) {
@@ -64,7 +80,7 @@ Ext.define('II.controller.Items', {
             return;
         }*/
       //if (stdMaster.isValid()) {
-      /*form.getForm().submit({
+      form.submit({
         method: 'POST',
         waitMsg: 'Saving..',
         headers:
@@ -73,6 +89,7 @@ Ext.define('II.controller.Items', {
         },
         success: function (form, action) {
           Ext.Msg.alert('Status', 'Saved successfully.');
+          Ext.getStore('Items').load();
           //TODO: repetir búsqueda
         },
         failure: function (form, action) {
@@ -86,10 +103,10 @@ Ext.define('II.controller.Items', {
                 Ext.Msg.alert('SERVER_INVALID', action.result.message);
             }
         }
-      });*/
+      });
       //}
     	win.close();
-      //this.getItemsStore().sync();
+
     },
 
     cleanSearchForm: function(button){

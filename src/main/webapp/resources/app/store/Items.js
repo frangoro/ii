@@ -4,6 +4,7 @@ Ext.define('II.store.Items', {
     alias: 'widget.itemsStore',
     autoLoad: true,
     filterOnLoad: false,
+    autoSync: true,
     //remoteFilter: true,
     actionMethods: {
         create: 'POST',

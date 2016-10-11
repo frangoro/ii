@@ -43,6 +43,22 @@ public interface ItemDao {
 	 */
 	public Boolean create(Items item);
 	
+	/**
+	 * Obtiene el item correspondiente
+	 * al código indicado. El código es único.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public Items findByCode(String code);
+
+	/**
+	 * Obtiene el item indicado por el id de entre los 
+	 * items disponibles (Estado NEW o RETURNED)
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Items findAvailableById(Long id);
 
 }

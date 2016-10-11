@@ -4,13 +4,13 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.frangoro.dao.ItemDao;
 import org.frangoro.domain.Items;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -91,6 +91,26 @@ public class ItemDaoHbn implements ItemDao{
 			}
 			log.warn("Not found item with code: " + code);
 			return null;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	@Override
+	public Items findAvailableById(Long id) {
+		log.debug("Get the item id: " + id);
+		try {
+			Query query = em.createQuery("from Items i where i.id = :id "
+					+ "and i.id in (select t.items.id from Transactions t "
+					+ "where (t.operation like 'NEW' or t.operation like 'RETURNED') AND transaction_date "
+					+ "in( select max(TRANSACTION_DATE) from Transactions group by items.id))");
+			query.setParameter("id", id);
+			Items item = (Items)query.getSingleResult();
+			if (item == null) {
+				log.warn("Not found item with id: " + id);
+			}
+			return item;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;

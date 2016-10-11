@@ -112,7 +112,7 @@ public class ItemController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public ResponseEntity<ItemDto> delete(@PathVariable("id") Long id) {
-		Items item = itemService.getItem(id);
+		Items item = itemService.getAvailableItem(id);
 		if (item == null) {
 			log.warn("Item not found with id: " + id);
 			return new ResponseEntity<ItemDto>(HttpStatus.NOT_FOUND);

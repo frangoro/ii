@@ -41,6 +41,15 @@ public interface ItemService {
 	 * @return
 	 */
 	public Items getItem(Long id);
+	
+	/**
+	 * Obtiene el item indicado por el id de entre los 
+	 * items disponibles (Estado NEW o RETURNED)
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Items getAvailableItem(Long id);
 
 	/**
 	 * Crea un nuevo item creando una nueva transacción.

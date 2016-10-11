@@ -92,12 +92,24 @@ public class ItemServiceImpl implements ItemService {
 		transaction = transactionDao.findByItemId(id);
 		// Duplicar transacción con la operacion a DELETE
 		transactionNew = new Transactions(transaction);
+		transactionNew.setOperation("REMOVED");
+		transactionNew.setTransactionDate(new Date());
+		transactionNew.setTransactionUser("frangoro");//FIXME
 		return transactionDao.create(transactionNew);
 	}
 
 	@Override
 	public Items getItem(Long id) {
 		Items item = itemDao.findById(id);
+		if (item == null) {
+			return null;
+		}
+		return item;
+	}
+	
+	@Override
+	public Items getAvailableItem(Long id) {
+		Items item = itemDao.findAvailableById(id);
 		if (item == null) {
 			return null;
 		}
